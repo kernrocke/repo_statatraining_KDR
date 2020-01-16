@@ -61,8 +61,81 @@ use "`datapath'/dataset01_meteorology.dta", clear
 *Describe data and variables
 describe
 
+*Tabulate measurement type
+tab measure
+
+*Retrieve codes for measure variables
+codebook measure
+
+/*Only rainfall needed therefore Av temp, Rel Hum, Max Temp and Min Temp will 
+be removed */ 
+
+keep if measure== 5
+
+*-------------------------------------------------------------------------------
+
+/*
+
+Create time variables
+
+This is being done because there is need for 3 different time variables 
+(quarter, month and week) years
+
+*/
+
 *Create time variables for quarters
+gen date_q = qofd(dov)
+format date_q %tq
+label var date_q "Date in quarter-years"
+
+*Create time variables for months
+gen date_m = mofd(dov)
+format date_m %tm
+label var date_m "Date in month-years"
+
+*Create time variables for weeks
+gen date_w = wofd(dov)
+format date_w %tw
+label var date_w "Date in week-years"
+
+*-------------------------------------------------------------------------------
+
+*Collapse section
+*-------------------------------------------------------------------------------
+
+/*
+Using preserve here due to analysis has to be conducted on quarter, month and 
+week
+*/
+
+
+preserve
+
+*Collapse dataset using sum of rainfall measures for each quarter
+collapse (sum) value, by(date_q)
+
+*SUMMARY TABLE Quarter-years
+tabstat value, by(date_q) stat(mean median min max) col(stat) format(%9.1f)
+
+restore
+
+*-------------------------------------------------------------------------------
+
+
+*Month-years
+tabstat value, by(date_m) stat(mean median min max) col(stat) format(%3.1f)
+
+*Week-years
+tabstat value, by(date_w) stat(mean median min max) col(stat) format(%3.1f)
+
+*-------------------------------------------------------------------------------
+
+*SUMMARY GRPAHS
+
+
 
 
 
 log close Week_01_STATA_Training
+
+*-----------------------------END-----------------------------------------------
