@@ -122,11 +122,28 @@ restore
 *-------------------------------------------------------------------------------
 
 
-*Month-years
-tabstat value, by(date_m) stat(mean median min max) col(stat) format(%3.1f)
+preserve
 
-*Week-years
-tabstat value, by(date_w) stat(mean median min max) col(stat) format(%3.1f)
+*Collapse dataset using sum of rainfall measures for each month
+collapse (sum) value, by(date_m)
+
+*SUMMMARY TABLE Month-years
+tabstat value, by(date_m) stat(mean median min max) col(stat) format(%9.1f)
+
+restore
+
+*-------------------------------------------------------------------------------
+
+
+preserve
+
+*Collapse dataset using sum of rainfall measures for each month
+collapse (sum) value, by(date_w)
+
+*SUMMMARY TABLE Month-years
+tabstat value, by(date_w) stat(mean median min max) col(stat) format(%9.1f)
+
+restore
 
 *-------------------------------------------------------------------------------
 
