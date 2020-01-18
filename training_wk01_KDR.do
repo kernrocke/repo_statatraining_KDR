@@ -4,12 +4,12 @@ capture log close
 cls
 
 **  GENERAL DO-FILE COMMENTS
-**  Program:		SES_BSS_ED_000.do
+**  Program:		training_wk_01_KDR.do
 **  Project:      	STATA Training - DATA GROUP GACDRC
 **	Sub-Project:	Week 1 (Collapse and Reshape)
 **  Analyst:		Kern Rocke
-**	Date Created:	15/01/2020
-**	Date Modified: 	15/01/2020
+**	Date Created:	10/11/2019
+**	Date Modified: 	15/11/2019
 **  Algorithm Task: Collapse and Reshape within STATA
 
 
@@ -25,13 +25,14 @@ set linesize 150
 ** Dataset to encrypted location
 
 *WINDOWS OS
-local datapath "X:/The University of the West Indies/DataGroup - repo_data/data_statatraining"
+*local datapath "X:/The University of the West Indies/DataGroup - repo_data/data_statatraining"
 
 *MAC OS
-*local datapath "/Volumes/Secomba/kernrocke/Boxcryptor/DataGroup - PROJECT_p145/data_statatraining"
+local datapath "/Volumes/Secomba/kernrocke/Boxcryptor/DataGroup - repo_dat/data_statatraining"
+
 
 ** Logfiles to unencrypted location
-local logpath "X:/The University of the West Indies/DataGroup - repo_data/data_statatraining_KDR"
+*local logpath "X:/The University of the West Indies/DataGroup - repo_data/data_statatraining_KDR"
 
 *-------------------------------------------------------------------------------
 
@@ -52,7 +53,11 @@ Graph the variation in admissions across the week (Sunday to Saturday)
 
 *Open log file to store results
 
-log using "`logpath'/Week01_KDR.log", name(Week_01_STATA_Training) replace
+*log using "`logpath'/Week01_KDR.log", name(Week_01_STATA_Training) replace
+
+*-------------------------------------------------------------------------------
+*				DATASET 01 - METEOROLOGY
+*-------------------------------------------------------------------------------
 
 *Open meterology dataset from encrypted location
 use "`datapath'/dataset01_meteorology.dta", clear
@@ -117,6 +122,29 @@ collapse (sum) value, by(date_q)
 *SUMMARY TABLE Quarter-years
 tabstat value, by(date_q) stat(mean median min max) col(stat) format(%9.1f)
 
+*SUMMARY GRAPH
+
+#delimit ;
+	graph twoway 
+		/// Observed adjusted rates
+		(line value date_q, clw(0.25) clc(gs13) clp("-#-#"))
+		plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		ysize(6) xsize(10)
+
+	    xlab(2000q1(4)2013q4, 
+	    labs(3) nogrid glc(gs12) angle(0)) 
+	    xtitle("Quarter-Years", size(3) margin(t=5)) 
+		xmtick(2000q1(4)2013q4)
+
+	    ylab(0(5)50, axis(1) labs(3) nogrid glc(gs12) angle(0) format(%9.0f))
+	    ytitle("Rainfall", axis(1) size(3) margin(r=3)) 
+		ytick(0(5)50)
+		ymtick(0(5)50) name(Quarter-Years)
+				
+		);
+#delimit cr
+
 restore
 
 *-------------------------------------------------------------------------------
@@ -129,6 +157,29 @@ collapse (sum) value, by(date_m)
 
 *SUMMMARY TABLE Month-years
 tabstat value, by(date_m) stat(mean median min max) col(stat) format(%9.1f)
+
+*SUMMARY GRAPH
+
+#delimit ;
+	graph twoway 
+		/// Observed adjusted rates
+		(line value date_m, clw(0.25) clc(gs13) clp("-#-#"))
+		plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		ysize(6) xsize(10)
+
+	    xlab(2000m1(4)2013m4, 
+	    labs(3) nogrid glc(gs12) angle(0)) 
+	    xtitle("Quarter-Years", size(3) margin(t=5)) 
+		xmtick(2000m1(4)2013m4)
+
+	    ylab(0(5)50, axis(1) labs(3) nogrid glc(gs12) angle(0) format(%9.0f))
+	    ytitle("Rainfall", axis(1) size(3) margin(r=3)) 
+		ytick(0(5)50)
+		ymtick(0(5)50) name(Quarter-Years)
+				
+		);
+#delimit cr
 
 restore
 
@@ -143,13 +194,39 @@ collapse (sum) value, by(date_w)
 *SUMMMARY TABLE Month-years
 tabstat value, by(date_w) stat(mean median min max) col(stat) format(%9.1f)
 
+*SUMMARY GRAPH
+
+#delimit ;
+	graph twoway 
+		/// Observed adjusted rates
+		(line value date_w, clw(0.25) clc(gs13) clp("-#-#"))
+		plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin)) 
+		ysize(6) xsize(10)
+
+	    xlab(2000w1(12)2013w4, 
+	    labs(3) nogrid glc(gs12) angle(0)) 
+	    xtitle("Quarter-Years", size(3) margin(t=5)) 
+		xmtick(2000w1(4)2013w4)
+
+	    ylab(0(5)50, axis(1) labs(3) nogrid glc(gs12) angle(0) format(%9.0f))
+	    ytitle("Rainfall", axis(1) size(3) margin(r=3)) 
+		ytick(0(5)50)
+		ymtick(0(5)50) name(Quarter-Years)
+				
+		);
+#delimit cr
+
 restore
 
 *-------------------------------------------------------------------------------
 
-*SUMMARY GRPAHS
+*-------------------------------------------------------------------------------
+*								DATASET 02 - ASTHMA
+*-------------------------------------------------------------------------------
 
-
+*Open meterology dataset from encrypted location
+use "`datapath'/dataset02_asthma.dta", clear
 
 
 
